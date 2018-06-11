@@ -9,7 +9,11 @@ print url #http://udacity.com
 
 print web_crawler.getAllURLs(page) #['http://udacity.com']
 
+'''
+tests for obsolete depth-first method
 seed = "http://xkcd.com/353"
 
 print len(web_crawler.crawlWeb(seed, 100)), web_crawler.crawlWeb(seed, 100) #31
-print len(web_crawler.crawlWeb(seed, 10)), web_crawler.crawlWeb(seed, 10) #10 
+print len(web_crawler.crawlWeb(seed, 10)), web_crawler.crawlWeb(seed, 10) #10 '''
+
+print web_crawler.crawlWeb("A1",3) #['A1', 'C1', 'B1', 'E1', 'D1', 'F1']

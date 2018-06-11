@@ -1,4 +1,4 @@
-import depth_first_TESTDATA
+import breadth_first_TESTDATA
 
 '''
 procedural abstraction of code from unit 1. define a procedure (function) to
@@ -51,15 +51,20 @@ this procedure will keep following the last link discovered on a given page
 before returning to links discovered on earlier pages. hence it is known as a
 depth-first search
 
-max_pages version to prevent crawl taking too long: '''
+change to breadth-first to limit depth of crawl. tutor's code: '''
 
-def crawlWeb(seed, max_pages):
+def crawlWeb(seed, max_depth):
     toCrawl = [seed]
     crawled = []
-    while toCrawl: #empty list is falsey
+    nextDepth = []
+    depth = 0
+    while toCrawl and depth <= max_depth:
         page = toCrawl.pop()
-        if page not in crawled and len(crawled) < max_pages:
-            pageContent = depth_first_TESTDATA.get_page(page)
-            union(toCrawl, getAllURLs(pageContent)) #preferred to concat, to avoid duplication
+        if page not in crawled:
+            pageContent = breadth_first_TESTDATA.get_page(page)
+            union(nextDepth, getAllURLs(pageContent))
             crawled.append(page)
+        if not toCrawl:
+            toCrawl, nextDepth = nextDepth, []
+            depth += 1
     return crawled
