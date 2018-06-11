@@ -1,3 +1,5 @@
+import depth_first_TESTDATA
+
 '''
 procedural abstraction of code from unit 1. define a procedure (function) to
 encapsulate the URL extraction: '''
@@ -13,7 +15,7 @@ def getURL(page): #could generalise to getTarget(string)
 
     url = page[openQuote + 1:closeQuote]
 
-    return url, closeQuote 
+    return url, closeQuote
 
 '''
 we know that we'll need to call the function multiple times to find multiple
@@ -32,3 +34,32 @@ def getAllURLs(page):
         else:
             break
     return urlList
+
+'''
+define the crawler procedure
+
+first, a utility procedure to combine lists without duplication: '''
+
+def union(list1, list2):
+    for e in list2:
+        if e not in list1:
+            list1.append(e)
+    #return statement not needed, because input list is mutated
+
+'''
+this procedure will keep following the last link discovered on a given page
+before returning to links discovered on earlier pages. hence it is known as a
+depth-first search
+
+this is the basic version: '''
+
+def crawlWeb(seed):
+    toCrawl = [seed]
+    crawled = []
+    while toCrawl: #empty list is falsey
+        page = toCrawl.pop()
+        if page not in crawled:
+            pageContent = depth_first_TESTDATA.get_page(page)
+            union(toCrawl, getAllURLs(pageContent)) #preferred to concat, to avoid duplication
+            crawled.append(page)
+    return crawled

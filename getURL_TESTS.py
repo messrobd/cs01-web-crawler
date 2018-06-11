@@ -8,3 +8,7 @@ url, endPos = web_crawler.getURL(page)
 print url #http://udacity.com
 
 print web_crawler.getAllURLs(page) #['http://udacity.com']
+
+seed = "http://xkcd.com/353"
+
+print len(web_crawler.crawlWeb(seed)), web_crawler.crawlWeb(seed) #31 
