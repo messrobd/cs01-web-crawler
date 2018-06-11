@@ -13,4 +13,22 @@ def getURL(page): #could generalise to getTarget(string)
 
     url = page[openQuote + 1:closeQuote]
 
-    return url, closeQuote #consuming function will need the closequote position
+    return url, closeQuote 
+
+'''
+we know that we'll need to call the function multiple times to find multiple
+links, so we return end_quote as well. the procedure doesn't change the value
+of page so we don't want to do so just to return it.
+
+define a procedure to get multiple URL's: '''
+
+def getAllURLs(page):
+    urlList = []
+    while True:
+        url, endPos = getURL(page)
+        if url: #None is falsey
+            urlList.append(url)
+            page = page[endPos:]
+        else:
+            break
+    return urlList

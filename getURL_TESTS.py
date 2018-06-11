@@ -6,3 +6,5 @@ page =('<div id="top_bin"><div id="top_content" class="width960">'
 url, endPos = web_crawler.getURL(page)
 
 print url #http://udacity.com
+
+print web_crawler.getAllURLs(page) #['http://udacity.com']
