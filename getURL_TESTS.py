@@ -11,4 +11,5 @@ print web_crawler.getAllURLs(page) #['http://udacity.com']
 
 seed = "http://xkcd.com/353"
 
-print len(web_crawler.crawlWeb(seed)), web_crawler.crawlWeb(seed) #31 
+print len(web_crawler.crawlWeb(seed, 100)), web_crawler.crawlWeb(seed, 100) #31
+print len(web_crawler.crawlWeb(seed, 10)), web_crawler.crawlWeb(seed, 10) #10 

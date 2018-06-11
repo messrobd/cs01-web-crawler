@@ -51,14 +51,14 @@ this procedure will keep following the last link discovered on a given page
 before returning to links discovered on earlier pages. hence it is known as a
 depth-first search
 
-this is the basic version: '''
+max_pages version to prevent crawl taking too long: '''
 
-def crawlWeb(seed):
+def crawlWeb(seed, max_pages):
     toCrawl = [seed]
     crawled = []
     while toCrawl: #empty list is falsey
         page = toCrawl.pop()
-        if page not in crawled:
+        if page not in crawled and len(crawled) < max_pages:
             pageContent = depth_first_TESTDATA.get_page(page)
             union(toCrawl, getAllURLs(pageContent)) #preferred to concat, to avoid duplication
             crawled.append(page)
