@@ -56,7 +56,21 @@ def lookup(index, keyword):
     return []
 
 '''
-index a whole page by splitting the content string into a list: '''
+index a whole page by splitting the content string into a list
+
+first, introduce a procedure to split strings on punctuation: '''
+
+def split_string(source, split_list):
+    tokens_out = [source]
+    tokens_sep = []
+    for c in split_list:
+        for token in tokens_out:
+            tokens_new = token.split(c)
+            for t in tokens_new:
+                if t: #empty string is falsey
+                    tokens_sep.append(t)
+        tokens_out, tokens_sep = tokens_sep, []
+    return tokens_out
 
 def add_page_to_index(index, url, content):
     keywords = content.split()
