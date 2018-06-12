@@ -7,3 +7,4 @@ web_crawler.add_to_index(index,'computing','http://acm.org')
 web_crawler.add_to_index(index,'udacity','http://npr.org')
 
 print index
+print web_crawler.lookup(index,'udacity')

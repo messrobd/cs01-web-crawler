@@ -74,13 +74,17 @@ unit 4: index
 
 we decide on the format [['keyword', ['url']], [['keyword', ['url']]]
 
-define a procedure that adds to the index: '''
+define procedures that add to the index, and lookup in the index: '''
 
 def add_to_index(index, keyword, url):
-    #i = 0
     for e in index:
         if e[0] == keyword:
             e[1].append(url)
-            return
-        #i += 1
+            return #interrupts the for loop
     index.append([keyword, [url]])
+
+def lookup(index, keyword):
+    for e in index:
+        if e[0] == keyword:
+            return e[1]
+    return []
