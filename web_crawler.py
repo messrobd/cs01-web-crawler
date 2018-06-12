@@ -1,4 +1,4 @@
-import breadth_first_TESTDATA
+import get_page_web
 
 '''
 procedural abstraction of code from unit 1. define a procedure (function) to
@@ -90,7 +90,7 @@ def crawlWeb(seed, max_depth):
     while toCrawl and depth <= max_depth:
         page = toCrawl.pop()
         if page not in crawled:
-            pageContent = breadth_first_TESTDATA.get_page(page)
+            pageContent = get_page_web.get_page(page)
             add_page_to_index(index, page, pageContent)
             union(nextDepth, getAllURLs(pageContent))
             crawled.append(page)
