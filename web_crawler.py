@@ -36,6 +36,34 @@ def getAllURLs(page):
     return urlList
 
 '''
+unit 4: index
+
+we decide on the format [['keyword', ['url']], [['keyword', ['url']]]
+
+define procedures that add to the index, and lookup in the index: '''
+
+def add_to_index(index, keyword, url):
+    for e in index:
+        if e[0] == keyword:
+            e[1].append(url)
+            return #interrupts the for loop
+    index.append([keyword, [url]])
+
+def lookup(index, keyword):
+    for e in index:
+        if e[0] == keyword:
+            return e[1]
+    return []
+
+'''
+index a whole page by splitting the content string into a list: '''
+
+def add_page_to_index(index, url, content):
+    keywords = content.split()
+    for k in keywords:
+        add_to_index(index, k, url)
+
+'''
 define the crawler procedure
 
 first, a utility procedure to combine lists without duplication: '''
@@ -58,41 +86,15 @@ def crawlWeb(seed, max_depth):
     crawled = []
     nextDepth = []
     depth = 0
+    index = []
     while toCrawl and depth <= max_depth:
         page = toCrawl.pop()
         if page not in crawled:
             pageContent = breadth_first_TESTDATA.get_page(page)
+            add_page_to_index(index, page, pageContent)
             union(nextDepth, getAllURLs(pageContent))
             crawled.append(page)
         if not toCrawl:
             toCrawl, nextDepth = nextDepth, []
             depth += 1
-    return crawled
-
-'''
-unit 4: index
-
-we decide on the format [['keyword', ['url']], [['keyword', ['url']]]
-
-define procedures that add to the index, and lookup in the index: '''
-
-def add_to_index(index, keyword, url):
-    for e in index:
-        if e[0] == keyword:
-            e[1].append(url)
-            return #interrupts the for loop
-    index.append([keyword, [url]])
-
-def lookup(index, keyword):
-    for e in index:
-        if e[0] == keyword:
-            return e[1]
-    return []
-
-'''
-index a whole page by splitting the string into a list: '''
-
-def add_page_to_index(index, url, content):
-    keywords = content.split()
-    for k in keywords:
-        add_to_index(index, k, url)
+    return index

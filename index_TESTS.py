@@ -14,3 +14,6 @@ index = []
 web_crawler.add_page_to_index(index,'fake.text',"This is a test")
 web_crawler.add_page_to_index(index,'so_fake.text',"This is still a test")
 print index
+
+seed = 'http://www.udacity.com/cs101x/index.html'
+print web_crawler.crawlWeb(seed, 10)
