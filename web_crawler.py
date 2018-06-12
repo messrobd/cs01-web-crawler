@@ -88,3 +88,11 @@ def lookup(index, keyword):
         if e[0] == keyword:
             return e[1]
     return []
+
+'''
+index a whole page by splitting the string into a list: '''
+
+def add_page_to_index(index, url, content):
+    keywords = content.split()
+    for k in keywords:
+        add_to_index(index, k, url)
