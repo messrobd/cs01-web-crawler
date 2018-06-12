@@ -68,3 +68,19 @@ def crawlWeb(seed, max_depth):
             toCrawl, nextDepth = nextDepth, []
             depth += 1
     return crawled
+
+'''
+unit 4: index
+
+we decide on the format [['keyword', ['url']], [['keyword', ['url']]]
+
+define a procedure that adds to the index: '''
+
+def add_to_index(index, keyword, url):
+    #i = 0
+    for e in index:
+        if e[0] == keyword:
+            e[1].append(url)
+            return
+        #i += 1
+    index.append([keyword, [url]])
