@@ -38,23 +38,33 @@ def getAllURLs(page):
 '''
 unit 4: index
 
-we decide on the format [['keyword', ['url']], [['keyword', ['url']]]
+we modify the format to include click count for each url
+[['keyword', [['url', count]]], [['keyword', [['url', count]]]]
 
 define procedures that add to the index, and lookup in the index: '''
 
 def add_to_index(index, keyword, url):
     for e in index:
         if e[0] == keyword:
-            if url not in e[1]:
-                e[1].append(url)
+            for u in e[1]:
+                if u[0] == url:
+                    return
+            e[1].append([url, 0])
             return #interrupts the for loop
-    index.append([keyword, [url]])
+    index.append([keyword, [[url, 0]]])
 
 def lookup(index, keyword):
     for e in index:
         if e[0] == keyword:
             return e[1]
     return []
+
+def record_user_click(index,keyword,url):
+    urls = lookup(index, keyword)
+    if urls:
+        for u in urls:
+            if u[0] == url:
+                u[1] += 1
 
 '''
 index a whole page by splitting the content string into a list
