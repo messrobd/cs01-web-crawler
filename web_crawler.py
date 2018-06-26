@@ -38,28 +38,30 @@ def getAllURLs(page):
 '''
 unit 4: index
 
-we modify the format to include click count for each url
-[['keyword', [['url', count]]], [['keyword', [['url', count]]]]
+we modify the representation of the index to a dictionary to improve
+scalability. properties:
+'keyword1': [['url', count]],
+'keyword2': [['url', count]]
 
 define procedures that add to the index, and lookup in the index: '''
 
 def add_to_index(index, keyword, url):
-    for e in index:
-        if e[0] == keyword:
-            for u in e[1]:
-                if u[0] == url:
-                    return
-            e[1].append([url, 0])
-            return #interrupts the for loop
-    index.append([keyword, [[url, 0]]])
+    if keyword in index:
+        urls = index[keyword]
+        for u in urls:
+            if u[0] == url:
+                return
+                urls.append([url, 0])
+            else:
+                index[keyword] = [[url, 0]]
 
 def lookup(index, keyword):
-    for e in index:
-        if e[0] == keyword:
-            return e[1]
-    return []
+    if keyword in index:
+        return index[keyword]
+    else:
+        return None
 
-def record_user_click(index,keyword,url):
+def record_user_click(index,keyword,url): #TODO update this method to use dict
     urls = lookup(index, keyword)
     if urls:
         for u in urls:
@@ -104,14 +106,14 @@ this procedure will keep following the last link discovered on a given page
 before returning to links discovered on earlier pages. hence it is known as a
 depth-first search
 
-change to breadth-first to limit depth of crawl. tutor's code: '''
+change to dictionary representation of index, to improve scalability: '''
 
 def crawlWeb(seed, max_depth):
     toCrawl = [seed]
     crawled = []
     nextDepth = []
     depth = 0
-    index = []
+    index = {}
     while toCrawl and depth <= max_depth:
         page = toCrawl.pop()
         if page not in crawled:
