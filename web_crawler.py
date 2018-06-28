@@ -115,4 +115,4 @@ def crawlWeb(seed):
             graph[page] = outlinks
             union(toCrawl, outlinks)
             crawled.append(page)
-    return index
+    return index, graph
