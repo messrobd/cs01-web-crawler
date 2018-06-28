@@ -48,11 +48,10 @@ define procedures that add to the index, and lookup in the index: '''
 def add_to_index(index, keyword, url):
     if keyword in index:
         urls = index[keyword]
-        for u in urls:
-            if u == url:
-                return
-            else:
-                urls.append(url)
+        if url in urls:
+            return
+        else:
+            urls.append(url)
     else:
         index[keyword] = [url]
 
