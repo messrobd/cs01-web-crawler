@@ -104,12 +104,15 @@ change to dictionary representation of index, to improve scalability: '''
 def crawlWeb(seed):
     toCrawl = [seed]
     crawled = []
+    graph = {}
     index = {}
     while toCrawl:
         page = toCrawl.pop()
         if page not in crawled:
             pageContent = get_page_web.get_page(page)
             add_page_to_index(index, page, pageContent)
-            union(toCrawl, getAllURLs(pageContent))
+            outlinks = getAllURLs(pageContent)
+            graph[page] = outlinks
+            union(toCrawl, outlinks)
             crawled.append(page)
     return index
