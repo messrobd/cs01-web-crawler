@@ -117,4 +117,16 @@ def crawlWeb(seed):
             crawled.append(page)
     return index, graph
 
-#def compute_ranks(graph):
+'''
+compue ranks '''
+
+def compute_ranks(graph):
+    d = 0.8 # damping factor
+    numloops = 10 # relaxation iterations
+
+    ranks = {}
+    npages = len(graph)
+    for page in graph:
+        ranks[page] = 1.0 / npages
+
+    return ranks 
