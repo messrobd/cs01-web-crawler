@@ -129,4 +129,16 @@ def compute_ranks(graph):
     for page in graph:
         ranks[page] = 1.0 / npages
 
-    return ranks 
+    for i in range(0, numloops):
+        newranks = {}
+        for page in graph:
+            newrank = (1 - d) / npages
+            for source in graph:
+                if source != page:
+                    outlinks = graph[source]
+                    if page in outlinks:
+                        newrank += (d * ranks[source]) / len(outlinks)
+            newranks[page] = newrank
+        ranks = newranks 
+
+    return ranks
