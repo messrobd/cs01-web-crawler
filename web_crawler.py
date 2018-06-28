@@ -51,9 +51,10 @@ def add_to_index(index, keyword, url):
         for u in urls:
             if u == url:
                 return
-                urls.append(url)
             else:
-                index[keyword] = [url]
+                urls.append(url)
+    else:
+        index[keyword] = [url]
 
 def lookup(index, keyword):
     if keyword in index:
@@ -116,3 +117,5 @@ def crawlWeb(seed):
             union(toCrawl, outlinks)
             crawled.append(page)
     return index, graph
+
+#def compute_ranks(graph):
