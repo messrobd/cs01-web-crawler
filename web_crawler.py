@@ -40,8 +40,8 @@ unit 4: index
 
 we modify the representation of the index to a dictionary to improve
 scalability. properties:
-'keyword1': [['url', count]],
-'keyword2': [['url', count]]
+'keyword1': ['url'],
+'keyword2': ['url']
 
 define procedures that add to the index, and lookup in the index: '''
 
@@ -49,24 +49,17 @@ def add_to_index(index, keyword, url):
     if keyword in index:
         urls = index[keyword]
         for u in urls:
-            if u[0] == url:
+            if u == url:
                 return
-                urls.append([url, 0])
+                urls.append(url)
             else:
-                index[keyword] = [[url, 0]]
+                index[keyword] = [url]
 
 def lookup(index, keyword):
     if keyword in index:
         return index[keyword]
     else:
         return None
-
-def record_user_click(index,keyword,url): #TODO update this method to use dict
-    urls = lookup(index, keyword)
-    if urls:
-        for u in urls:
-            if u[0] == url:
-                u[1] += 1
 
 '''
 index a whole page by splitting the content string into a list
@@ -108,20 +101,15 @@ depth-first search
 
 change to dictionary representation of index, to improve scalability: '''
 
-def crawlWeb(seed, max_depth):
+def crawlWeb(seed):
     toCrawl = [seed]
     crawled = []
-    nextDepth = []
-    depth = 0
     index = {}
-    while toCrawl and depth <= max_depth:
+    while toCrawl:
         page = toCrawl.pop()
         if page not in crawled:
             pageContent = get_page_web.get_page(page)
             add_page_to_index(index, page, pageContent)
-            union(nextDepth, getAllURLs(pageContent))
+            union(toCrawl, getAllURLs(pageContent))
             crawled.append(page)
-        if not toCrawl:
-            toCrawl, nextDepth = nextDepth, []
-            depth += 1
     return index
