@@ -1,4 +1,4 @@
-import get_page_web
+from get_page_web import get_page
 
 '''
 procedural abstraction of code from unit 1. define a procedure (function) to
@@ -109,7 +109,7 @@ def crawlWeb(seed):
     while toCrawl:
         page = toCrawl.pop()
         if page not in crawled:
-            pageContent = get_page_web.get_page(page)
+            pageContent = get_page(page)
             add_page_to_index(index, page, pageContent)
             outlinks = getAllURLs(pageContent)
             graph[page] = outlinks
@@ -118,7 +118,19 @@ def crawlWeb(seed):
     return index, graph
 
 '''
-compue ranks '''
+compute ranks
+
+rank(0, url) ==> 1 / N
+rank(t, url) ==> d * sum( links[url]( rank(t - 1, p) / urls[p] ) ) + (1-d) / N
+
+outline function from tutor's code
+
+for loop preferred to recursion. algorithm is equivalent because
+* in iteration t, rank of all a page's inlinks are added to its own
+* still in iteration t, the rank of every page's inlinks is recomputed the same
+way
+* in iteration t + 1, the process is repeated, but now the ranks of all a
+page's inlinks have been recomputed '''
 
 def compute_ranks(graph):
     d = 0.8 # damping factor
@@ -139,6 +151,6 @@ def compute_ranks(graph):
                     if page in outlinks:
                         newrank += (d * ranks[source]) / len(outlinks)
             newranks[page] = newrank
-        ranks = newranks 
+        ranks = newranks
 
     return ranks
