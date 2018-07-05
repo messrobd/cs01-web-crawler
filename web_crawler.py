@@ -187,7 +187,7 @@ sorted([n0, n1]) ==> n0 > n
 sorted([n0 ... nn]) ==> sorted(n0, sorted([n1 ... nn]))
 sorted([n]) ==> sorted([<n]) + n + sorted([>n])'''
 
-def quicksort_descend(inlist):
+def quicksort_descend_L(inlist):
     if len(inlist) == 0 or len(inlist) == 1:
         return inlist
     pivot = inlist[0]
@@ -200,3 +200,19 @@ def quicksort_descend(inlist):
         elif n > pivot:
             gt = quicksort_descend(gt + [n])
     return gt + [pivot] + lt
+
+def quicksort_descend(vlist, keylist):
+    if len(vlist) == 0 or len(vlist) == 1:
+        return vlist, keylist
+    pivot, pivot_key = vlist[0], keylist[0]
+    unsorted, unsorted_keys = vlist[1:], keylist[1:]
+    lt, lt_keys = [], []
+    gt, gt_keys = [], []
+    for i, n in enumerate(unsorted):
+        if n <= pivot:
+            lt, lt_keys = quicksort_descend(lt + [n], lt_keys + [unsorted_keys[i]])
+        elif n > pivot:
+            gt, gt_keys = quicksort_descend(gt + [n], gt_keys + [unsorted_keys[i]])
+    sorted_values = gt + [pivot] + lt
+    sorted_keys = gt_keys + [pivot_key] + lt_keys
+    return sorted_values, sorted_keys
