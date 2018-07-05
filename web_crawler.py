@@ -154,3 +154,18 @@ def compute_ranks(graph):
         ranks = newranks
 
     return ranks
+
+'''
+feeling lucky (lesson 23: prob set, #5)
+
+given an index, a ranks dic and a keyword, return the highest ranked result '''
+
+def lucky_search(index, ranks, keyword):
+    if keyword in index:
+        candidates = index[keyword]
+        result = candidates[0]
+        for c in candidates:
+            result = c if ranks[c] > ranks[result] else result # py ternary statement
+        return result
+    else:
+        return None
