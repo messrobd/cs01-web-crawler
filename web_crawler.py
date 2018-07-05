@@ -169,3 +169,34 @@ def lucky_search(index, ranks, keyword):
         return result
     else:
         return None
+
+'''
+ordered search (lesson 24: prob set, #3)
+
+given a keyword, return a set of results sorted on rank (descending)
+
+tip: use quicksort (hoare '59)
+  1. lists with 0 or 1 element are already sorted
+  2. pick a pivot
+  3. create 2 lists, one greater than the pivot, and one less than
+  4. concatenate the 3 resulting lists to give the sorted result
+
+sorted([]) ==> true
+sorted([n]) ==> true
+sorted([n0, n1]) ==> n0 > n
+sorted([n0 ... nn]) ==> sorted(n0, sorted([n1 ... nn]))
+sorted([n]) ==> sorted([<n]) + n + sorted([>n])'''
+
+def quicksort_descend(inlist):
+    if len(inlist) == 0 or len(inlist) == 1:
+        return inlist
+    pivot = inlist[0]
+    unsorted = inlist[1:]
+    lt = []
+    gt = []
+    for n in unsorted:
+        if n <= pivot:
+            lt = quicksort_descend(lt + [n])
+        elif n > pivot:
+            gt = quicksort_descend(gt + [n])
+    return gt + [pivot] + lt
