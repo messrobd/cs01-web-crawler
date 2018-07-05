@@ -216,3 +216,14 @@ def quicksort_descend(vlist, keylist):
     sorted_values = gt + [pivot] + lt
     sorted_keys = gt_keys + [pivot_key] + lt_keys
     return sorted_values, sorted_keys
+
+def ordered_search(index, ranks, keyword):
+    if keyword in index:
+        candidates = index[keyword]
+        candidates_ranked = {}
+        for c in candidates:
+            candidates_ranked[c] = ranks[c]
+        unsorted_ranks, unsorted_urls = candidates_ranked.values(), candidates_ranked.keys()
+        return quicksort_descend(unsorted_ranks, unsorted_urls)[1]
+    else:
+        return None
