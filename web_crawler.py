@@ -62,10 +62,9 @@ def lookup(index, keyword):
         return None
 
 '''
-index a whole page by splitting the content string into a list
+index a whole page by splitting the content string into a list'''
 
-first, introduce a procedure to split strings on punctuation: '''
-
+#first, introduce a procedure to split strings on punctuation:
 def split_string(source, split_list):
     tokens_out = [source]
     tokens_sep = []
@@ -77,6 +76,15 @@ def split_string(source, split_list):
                     tokens_sep.append(t)
         tokens_out, tokens_sep = tokens_sep, []
     return tokens_out
+
+#another utility procedure to remove tags (tutor's code much better than mine)
+def remove_tags(html):
+    start = string.find('<')
+    while start != -1:
+        end = string.find('>', start)
+        string = string[:start] + ' ' + string[end+1: ]
+        start = string.find('<')
+    return string.split()
 
 def add_page_to_index(index, url, content):
     keywords = content.split()
@@ -185,7 +193,9 @@ sorted([]) ==> true
 sorted([n]) ==> true
 sorted([n0, n1]) ==> n0 > n
 sorted([n0 ... nn]) ==> sorted(n0, sorted([n1 ... nn]))
-sorted([n]) ==> sorted([<n]) + n + sorted([>n])'''
+sorted([n]) ==> sorted([<n]) + n + sorted([>n])
+
+my solutions, one 1D, the other 2D:
 
 def quicksort_descend_L(inlist):
     if len(inlist) == 0 or len(inlist) == 1:
@@ -227,3 +237,24 @@ def ordered_search(index, ranks, keyword):
         return quicksort_descend(unsorted_ranks, unsorted_urls)[1]
     else:
         return None
+
+the tutor's solution only recurses once the lt/gt lists are built for each
+unsorted set. on the face of it that sounds more efficient than what I did: '''
+
+def quicksort_descend(pages, ranks):
+    if not pages or len(pages) <= 1:
+        return pages
+    else:
+        pivot = ranks[pages[0]]
+        lt = []
+        gt = []
+        for page in pages[1:]:
+            if ranks[page] <= pivot:
+                lt.append(page) # this is ok, because we look up ranks dynamically
+            else:
+                gt.append(page)
+        return quicksort_descend(gt, ranks) + [pages[0]] + quicksort_descend(lt, ranks)
+
+def ordered_search(index, ranks, keyword):
+    pages = lookup(index, keyword)
+    return quicksort_descend(pages, ranks)
