@@ -126,7 +126,7 @@ def crawlWeb(seed):
     return index, graph
 
 '''
-compute ranks
+compute ranks (lesson 22: how to have infinite power, #28)
 
 rank(0, url) ==> 1 / N
 rank(t, url) ==> d * sum( links[url]( rank(t - 1, p) / urls[p] ) ) + (1-d) / N
@@ -138,31 +138,62 @@ for loop preferred to recursion. algorithm is equivalent because
 * still in iteration t, the rank of every page's inlinks is recomputed the same
 way
 * in iteration t + 1, the process is repeated, but now the ranks of all a
-page's inlinks have been recomputed '''
+page's inlinks have been recomputed
 
-def compute_ranks(graph):
+combatting link spam (lesson 28: challenging practice problems, #2)
+
+given a graph, exclude reciprocal links of length <= k
+
+ie, If k=2, B->A would count as a reciprocal link for node A if there is a path
+A->C->B, for some page C, (link path of length 2), or a direct link A-> B (link
+path of length 1)'''
+
+def reachable_pages(page, graph, k): # k = depth
+    if k <= 0:
+        return [page] if page in graph[page] else []
+    reachable = []
+    outlinks = graph[page]
+    for outlink in outlinks:
+        if outlink != page:
+            reachable += [outlink]
+        reachable += reachable_pages(outlink, graph, k-1)
+    return reachable
+
+def compute_ranks(graph, k):
     d = 0.8 # damping factor
-    numloops = 10 # relaxation iterations
+    relaxations = 10 # relaxation iterations
 
+    reachable = {}
     ranks = {}
     npages = len(graph)
     for page in graph:
+        reachable[page] = reachable_pages(page, graph, k)
         ranks[page] = 1.0 / npages
 
-    for i in range(0, numloops):
+    for i in range(0, relaxations):
         newranks = {}
         for page in graph:
             newrank = (1 - d) / npages
             for source in graph:
-                if source != page:
-                    outlinks = graph[source]
-                    if page in outlinks:
-                        newrank += (d * ranks[source]) / len(outlinks)
+                outlinks = graph[source]
+                if page in outlinks and source not in reachable[page]:
+                    newrank += (d * ranks[source]) / len(outlinks)
             newranks[page] = newrank
         ranks = newranks
 
     return ranks
-
+'''
+def compute_ranks_REC(graph, r, k):
+    d = 0.8 # damping factor
+    npages = len(graph)
+    if k == 0 or r == 0:
+        return 1 / npages
+    ranks = {}
+    for page in graph:
+        newrank = (1 - d) / npages
+        for source in graph:
+            newrank += d *
+'''
 '''
 feeling lucky (lesson 23: prob set, #5)
 
