@@ -146,7 +146,10 @@ given a graph, exclude reciprocal links of length <= k
 
 ie, If k=2, B->A would count as a reciprocal link for node A if there is a path
 A->C->B, for some page C, (link path of length 2), or a direct link A-> B (link
-path of length 1)'''
+path of length 1)
+
+tutor's solution is_reciprocal results in fewer changes to compute_ranks than
+mine, but still uses recursion to find the reciprocal link value '''
 
 def reachable_pages(page, graph, k): # k = depth
     if k <= 0:
@@ -159,15 +162,22 @@ def reachable_pages(page, graph, k): # k = depth
         reachable += reachable_pages(outlink, graph, k-1)
     return reachable
 
+def is_reciprocal(graph, source, destination, k):
+    if k == 0:
+        return True if destination == source else False
+    if source in graph[destination]:
+        return True
+    for node in graph[destination]:
+        return True if is_reciprocal(graph, source, node, k-1) else False
+
+
 def compute_ranks(graph, k):
     d = 0.8 # damping factor
     relaxations = 10 # relaxation iterations
 
-    reachable = {}
     ranks = {}
     npages = len(graph)
     for page in graph:
-        reachable[page] = reachable_pages(page, graph, k)
         ranks[page] = 1.0 / npages
 
     for i in range(0, relaxations):
@@ -176,7 +186,7 @@ def compute_ranks(graph, k):
             newrank = (1 - d) / npages
             for source in graph:
                 outlinks = graph[source]
-                if page in outlinks and source not in reachable[page]:
+                if page in outlinks and not is_reciprocal(graph, source, page, k):
                     newrank += (d * ranks[source]) / len(outlinks)
             newranks[page] = newrank
         ranks = newranks
